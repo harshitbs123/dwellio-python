@@ -1,0 +1,376 @@
+<!-- Ambient Glassmorphism Floating Glow Orbs (Behind content) -->
+{% set safeUser = currUser if currUser is defined else None %}
+<!-- Listing addition flash -->
+ {% if success and success|length > 0 %}
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-3">
+    <div class="flex items-center justify-between px-4 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm backdrop-blur-xl shadow-[0_0_20px_rgba(16,185,129,0.15)] animate-fade-in">
+      <div class="flex items-center gap-2.5">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span>{{ success[0] }}</span>
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" class="text-emerald-400/60 hover:text-emerald-300 transition text-xs">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+{% endif %}
+
+{% if error and error|length > 0 %}
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-3">
+    <div class="flex items-center justify-between px-4 py-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs sm:text-sm backdrop-blur-xl shadow-[0_0_20px_rgba(244,63,94,0.15)] animate-fade-in">
+      <div class="flex items-center gap-2.5">
+        <i class="fa-solid fa-circle-exclamation text-rose-400"></i>
+        <span>{{ error[0] }}</span>
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" class="text-rose-400/60 hover:text-rose-300 transition text-xs">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+{% endif %}
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-20">
+  <div class="glass-glow-orb orb-pink"></div>
+  <div class="glass-glow-orb orb-purple"></div>
+  <div class="glass-glow-orb orb-cyan"></div>
+  <div class="glass-glow-orb orb-sunset"></div>
+</div>
+
+<!-- Sleek, Minimal, Luxury Vice City Navbar -->
+<header class="sticky top-0 z-50 py-2 sm:py-2.5 px-3 sm:px-6 backdrop-blur-xl bg-black/10 border-b border-white/[0.04] transition-all duration-300">
+  <nav
+    class="max-w-6xl mx-auto px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#08080c]/80 backdrop-blur-2xl border border-white/[0.08] hover:border-pink-500/25 shadow-[0_4px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(255,42,133,0.08)] flex items-center justify-between transition-all duration-500"
+  >
+    <!-- Left: Sleek Glowing Vice City Logo -->
+    <div class="flex-shrink-0 flex items-center">
+      <a href="/" class="flex items-center group py-0.5">
+        <div class="logo-wrapper transition-all duration-300">
+          <img
+            src="/logo.png"
+            alt="Dwellio"
+            class="h-7 sm:h-8 w-auto object-contain dwellio-nav-logo filter drop-shadow-[2px_2px_15px_rgba(255,42,133,0.6)] group-hover:scale-105 transition-all duration-200"
+            onerror="this.style.display='none'; document.getElementById('textLogo').classList.remove('hidden');"
+          />
+        </div>
+        <span id="textLogo" class="hidden items-center text-white tracking-tight font-medium text-base">
+          <i class="text-[#ff2a85] text-xl stardom-font not-italic mr-0.5">D</i><span class="zodiac-font">wellio</span>
+        </span>
+      </a>
+    </div>
+
+    <!-- Center: Minimal Clean Navigation Links -->
+    <div
+      class="hidden md:flex items-center space-x-6 text-xs zodiac-font font-light tracking-wide text-zinc-300"
+    >
+      <a
+        href="/"
+        class="transition hover:text-pink-300 {{ 'text-pink-400 font-semibold' if active == 'home' else 'hover:text-white' }}"
+      >
+        Home
+      </a>
+      <a
+        href="/listings"
+        class="transition hover:text-pink-300 {{ 'text-pink-400 font-semibold' if active == 'listings' else 'hover:text-white' }}"
+      >
+        All Stays
+      </a>
+      <a
+        href="/listings?search=Villa"
+        class="transition hover:text-pink-300 {{ 'text-pink-400 font-semibold' if active == 'villas' else 'hover:text-white' }}"
+      >
+        Villas
+      </a>
+      <a
+        href="/listings?search=Resort"
+        class="transition hover:text-pink-300 {{ 'text-pink-400 font-semibold' if active == 'beachfront' else 'hover:text-white' }}"
+      >
+        Resorts
+      </a>
+      <a
+        href="/listings/host"
+        class="transition hover:text-pink-300 {{ 'text-pink-400 font-semibold' if active == 'host' else 'hover:text-white' }}"
+      >
+        Host
+      </a>
+    </div>
+
+    <!-- Right: Minimal Sleek Controls -->
+    <div class="flex items-center gap-2">
+      <!-- Become a Host Pill (Desktop) -->
+      <a
+        href="/listings/host"
+        class="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-medium text-pink-300 border border-pink-500/30 bg-pink-500/10 hover:bg-pink-500/20 hover:border-pink-500/60 hover:text-white transition duration-200 shadow-[0_0_12px_rgba(255,42,133,0.15)]"
+      >
+        <i class="fa-solid fa-sparkles text-[9px] text-pink-400"></i>
+        <span>Become a host</span>
+      </a>
+
+      {% if not safeUser %}
+        <!-- Auth Box: Log In / Sign Up (Desktop) -->
+        <div class="hidden sm:flex items-center gap-1 p-0.5 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl">
+          <a
+            href="/login"
+            class="px-3 py-1 rounded-full text-[11px] font-medium text-zinc-300 hover:text-white hover:bg-white/[0.06] transition"
+          >
+            Log in
+          </a>
+          <a
+            href="/signup"
+            class="px-3.5 py-1 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:shadow-[0_0_14px_rgba(255,42,133,0.45)] hover:scale-102 active:scale-98 transition duration-200 shadow-sm"
+          >
+            Sign up
+          </a>
+        </div>
+      {% else %}
+        <!-- User Profile Pill & Hover Box (Desktop) -->
+        <div class="relative group">
+          <button
+            type="button"
+            class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-pink-500/40 text-white transition duration-200 cursor-pointer shadow-sm group-hover:bg-white/[0.08] group-hover:border-pink-500/50"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <!-- User Avatar Circle -->
+            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-pink-500 to-rose-400 text-white flex items-center justify-center font-bold text-[10px] shadow-[0_0_10px_rgba(255,42,133,0.5)]">
+              {{ safeUser.username[:1]|upper if safeUser.username else "U" }}
+            </div>
+            <span class="text-[11px] font-medium max-w-[90px] truncate">{{ safeUser.username }}</span>
+            <i class="fa-solid fa-chevron-down text-[8px] text-zinc-400 group-hover:text-pink-400 group-hover:rotate-180 transition-transform duration-200"></i>
+          </button>
+
+          <!-- Glassmorphic Hover Box -->
+          <div
+            class="absolute right-0 top-full pt-2 w-56 z-50 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 pointer-events-none group-hover:pointer-events-auto"
+          >
+            <div class="rounded-2xl bg-[#08080c]/95 border border-white/10 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.85),0_0_20px_rgba(255,42,133,0.12)] overflow-hidden">
+              <!-- Signed In As Header -->
+              <div class="px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"></span>
+                  <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold">You are signed in</span>
+                </div>
+                <p class="text-xs font-semibold text-white truncate">{{ safeUser.username }}</p>
+                {% if safeUser.email %}
+                  <p class="text-[10px] text-zinc-400 font-light truncate mt-0.5">{{ safeUser.email }}</p>
+                {% endif %}
+              </div>
+
+              <!-- Menu Actions -->
+              <div class="p-1.5 space-y-0.5 text-xs text-zinc-300">
+                <a
+                  href="/listings/host"
+                  class="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition"
+                >
+                  <i class="fa-solid fa-plus text-[10px] text-pink-400"></i>
+                  <span>Host a Property</span>
+                </a>
+                <a
+                  href="/listings"
+                  class="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition"
+                >
+                  <i class="fa-solid fa-compass text-[10px] text-pink-400"></i>
+                  <span>Explore Stays</span>
+                </a>
+
+                <div class="my-1 border-t border-white/[0.06]"></div>
+
+                <!-- Sign Out -->
+                <a
+                  href="/logout"
+                  class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition font-medium"
+                >
+                  <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
+                  <span>Sign Out</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Apple macOS Glass Theme Toggle (Light / Dark) -->
+      <button
+        id="themeToggleBtn"
+        type="button"
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full theme-toggle-btn border flex items-center justify-center transition-all duration-300 cursor-pointer"
+        title="Toggle Theme: macOS Glass Light / Vice City Dark"
+        aria-label="Toggle light and dark theme"
+      >
+        <i class="theme-icon-dark fa-solid fa-moon text-xs text-pink-400"></i>
+        <i class="theme-icon-light fa-solid fa-sun text-xs text-amber-500 hidden"></i>
+      </button>
+
+      <!-- Quick Explore Globe -->
+      <a
+        href="/listings"
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.03] border border-white/10 hover:border-pink-500/40 text-zinc-400 hover:text-pink-400 flex items-center justify-center transition"
+        title="Explore all stays"
+      >
+        <i class="fa-solid fa-globe text-xs"></i>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        id="mobileMenuBtn"
+        type="button"
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.03] border border-white/10 text-zinc-400 hover:text-pink-400 md:hidden flex items-center justify-center transition cursor-pointer"
+        aria-label="Toggle navigation menu"
+      >
+        <i class="fa-solid fa-bars-staggered text-xs"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown Navigation -->
+  <div
+    id="mobileMenu"
+    class="hidden md:hidden max-w-5xl mx-auto mt-2 p-4 rounded-2xl bg-[#08080c]/95 border border-white/10 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.85)] transition-all"
+  >
+    <div class="flex flex-col space-y-2 zodiac-font text-xs text-zinc-300">
+      <a
+        href="/"
+        class="px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition flex items-center justify-between"
+      >
+        <span>Home</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-pink-400/50"></i>
+      </a>
+      <a
+        href="/listings"
+        class="px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition flex items-center justify-between"
+      >
+        <span>All Stays</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-pink-400/50"></i>
+      </a>
+      <a
+        href="/listings?search=Villa"
+        class="px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition flex items-center justify-between"
+      >
+        <span>Villas</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-pink-400/50"></i>
+      </a>
+      <a
+        href="/listings?search=Resort"
+        class="px-3 py-2 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition flex items-center justify-between"
+      >
+        <span>Resorts</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-pink-400/50"></i>
+      </a>
+      <a
+        href="/listings/host"
+        class="px-3 py-2 rounded-xl bg-pink-500/15 border border-pink-500/35 text-pink-300 font-semibold transition flex items-center justify-between"
+      >
+        <span class="flex items-center gap-2">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          Host Your Property
+        </span>
+        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </a>
+
+      <!-- Theme Switcher in Mobile Menu -->
+      <button
+        id="mobileThemeBtn"
+        type="button"
+        class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-pink-500/10 hover:text-pink-300 transition flex items-center justify-between cursor-pointer border border-white/5"
+      >
+        <span class="flex items-center gap-2">
+          <i class="theme-icon-dark fa-solid fa-moon text-xs text-pink-400"></i>
+          <i class="theme-icon-light fa-solid fa-sun text-xs text-amber-500 hidden"></i>
+          <span class="theme-toggle-text">Switch to Light Mode</span>
+        </span>
+        <span class="text-[10px] px-2.5 py-0.5 rounded-full border border-pink-500/30 text-pink-400 theme-badge-text font-medium">macOS Glass</span>
+      </button>
+
+      <!-- Mobile Auth Section -->
+      <div class="pt-2 mt-1 border-t border-white/[0.08]">
+        {% if not safeUser %}
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <a
+              href="/login"
+              class="text-center px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-pink-500/30 text-white text-xs font-medium transition"
+            >
+              Sign In
+            </a>
+            <a
+              href="/signup"
+              class="text-center px-3 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 text-white text-xs font-semibold shadow-sm hover:shadow-[0_0_15px_rgba(255,42,133,0.4)] transition"
+            >
+              Sign Up
+            </a>
+          </div>
+        {% else %}
+          <div class="px-3 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 mb-2">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"></span>
+              <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold">You are signed in</span>
+            </div>
+            <p class="text-xs font-semibold text-white">{{ safeUser.username }}</p>
+            {% if safeUser.email %}
+              <p class="text-[10px] text-zinc-400 font-light mt-0.5">{{ safeUser.email }}</p>
+            {% endif %}
+          </div>
+          <a
+            href="/logout"
+            class="px-3 py-2 rounded-xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition flex items-center justify-between font-medium"
+          >
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
+              Sign Out
+            </span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-rose-400/50"></i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile Menu Toggle
+  const mobileBtn = document.getElementById("mobileMenuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  if (mobileBtn && mobileMenu) {
+    mobileBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  }
+
+  // Theme Switcher Controller
+  (function () {
+    const themeBtn = document.getElementById("themeToggleBtn");
+    const mobileThemeBtn = document.getElementById("mobileThemeBtn");
+    const darkIcons = document.querySelectorAll(".theme-icon-dark");
+    const lightIcons = document.querySelectorAll(".theme-icon-light");
+    const themeTexts = document.querySelectorAll(".theme-toggle-text");
+    const themeBadges = document.querySelectorAll(".theme-badge-text");
+
+    function syncThemeUI(theme) {
+      if (theme === "light") {
+        darkIcons.forEach((i) => i.classList.add("hidden"));
+        lightIcons.forEach((i) => i.classList.remove("hidden"));
+        themeTexts.forEach((t) => (t.textContent = "Switch to Dark Mode"));
+        themeBadges.forEach((b) => (b.textContent = "Vice City"));
+      } else {
+        darkIcons.forEach((i) => i.classList.remove("hidden"));
+        lightIcons.forEach((i) => i.classList.add("hidden"));
+        themeTexts.forEach((t) => (t.textContent = "Switch to Light Mode"));
+        themeBadges.forEach((b) => (b.textContent = "macOS Glass"));
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("dwellio_theme", next);
+      } catch (e) {}
+      syncThemeUI(next);
+    }
+
+    if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+    if (mobileThemeBtn) mobileThemeBtn.addEventListener("click", toggleTheme);
+
+    // Initial sync with active data-theme
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    syncThemeUI(currentTheme);
+  })();
+</script>

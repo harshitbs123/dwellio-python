@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% with title=listing.title if listing else 'Stay Details' %}{% include "includes/head.html" %}{% endwith %}
+  </head>
+  <body class="bg-[#030305] text-white selection:bg-pink-500 selection:text-white">
+    
+    {% include "includes/navbar.html" %}
+
+    <div class="relative overflow-hidden min-h-screen">
+      <!-- Ambient background lighting (Vice City neon glow) -->
+      <div
+        class="absolute top-10 left-1/3 w-[550px] h-[350px] bg-pink-500/8 rounded-full blur-[140px] pointer-events-none -z-10"
+      ></div>
+
+      <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <!-- BREADCRUMBS -->
+        <nav class="flex items-center space-x-2 text-xs text-zinc-500 mb-5 zodiac-font">
+          <a href="/" class="hover:text-pink-300 transition">Home</a>
+          <span class="text-zinc-700">/</span>
+          <a href="/listings" class="hover:text-pink-300 transition">All Stays</a>
+          <span class="text-zinc-700">/</span>
+          <span class="text-pink-400 truncate max-w-xs font-medium">{{ listing.title }}</span>
+        </nav>
+
+        <!-- PROPERTY HEADER -->
+        <div class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 class="stardom-font text-2xl sm:text-4xl lg:text-5xl font-light text-white tracking-wide">
+              {{ listing.title }}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-2.5 sm:gap-3.5 mt-2.5 text-xs text-zinc-300 zodiac-font">
+              <span class="inline-flex items-center gap-1 font-medium text-pink-400">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span>4.95</span>
+                <span class="text-zinc-500 font-light underline ml-0.5">(84 reviews)</span>
+              </span>
+              <span class="text-zinc-700">·</span>
+              <span class="inline-flex items-center gap-1 text-zinc-300 font-light">
+                <i class="fa-solid fa-medal text-pink-400 text-xs"></i>
+                <span>Superhost</span>
+              </span>
+              <span class="text-zinc-700">·</span>
+              <span class="inline-flex items-center gap-1.5 text-zinc-400 font-light">
+                <i class="fa-solid fa-location-dot text-pink-500 text-[10px]"></i>
+                <span>{{ listing.location }}, {{ listing.country }}</span>
+              </span>
+              <span class="text-zinc-700">·</span>
+              <span class="inline-flex items-center gap-1.5 text-zinc-300 font-light">
+                <i class="fa-solid fa-user-circle text-pink-400 text-xs"></i>
+                <span>Hosted by <strong class="text-pink-300 font-medium">@{{ listing.owner.username if listing.owner and listing.owner.username else "Dwellio Host" }}</strong></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Share & Save Buttons -->
+          <div class="flex items-center gap-2 self-start md:self-auto">
+            <button
+              type="button"
+              onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');"
+              class="px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.02] hover:border-pink-500/35 hover:bg-pink-500/10 text-xs text-zinc-300 hover:text-white transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <i class="fa-solid fa-share-nodes text-pink-400 text-xs"></i>
+              <span>Share</span>
+            </button>
+            <button
+              type="button"
+              class="px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.02] hover:border-pink-500/35 hover:bg-pink-500/10 text-xs text-zinc-300 hover:text-white transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <i class="fa-regular fa-heart text-pink-400 text-xs"></i>
+              <span>Save</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MAIN HERO MEDIA SHOWCASE -->
+        <div class="relative rounded-3xl overflow-hidden border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.6)] mb-8 group bg-zinc-950">
+          <div class="w-full h-[300px] sm:h-[440px] lg:h-[500px] overflow-hidden">
+            <img
+              src="{{ listing.image }}"
+              alt="{{ listing.title }}"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-102"
+              onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80';"
+            />
+          </div>
+
+          <!-- Floating Badges Overlay -->
+          <div class="absolute top-3.5 left-3.5 flex gap-2">
+            <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-black/60 backdrop-blur-md text-pink-300 border border-pink-500/30 flex items-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-sparkles text-pink-400 text-[10px]"></i>
+              <span>Curated Luxury</span>
+            </span>
+          </div>
+
+          <div class="absolute bottom-3.5 right-3.5">
+            <span class="px-3 py-1.5 rounded-xl bg-black/65 backdrop-blur-md border border-white/15 text-[11px] font-medium text-white flex items-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-camera text-pink-400 text-xs"></i>
+              <span>Verified Photography</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- TWO-COLUMN LAYOUT -->
+        <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 items-start">
+          <!-- LEFT COLUMN: PROPERTY DETAILS & AMENITIES -->
+          <div class="space-y-6">
+            <!-- Host Bio Pill -->
+            <div class="p-5 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 p-0.5 flex-shrink-0 shadow-[0_0_15px_rgba(255,42,133,0.3)]">
+                  <div class="w-full h-full bg-[#030305] rounded-[14px] flex items-center justify-center text-pink-400 font-bold text-base">
+                    {{ listing.owner.username[:1]|upper if listing.owner and listing.owner.username else "D" }}
+                  </div>
+                </div>
+                <div>
+                  <h2 class="stardom-font text-lg text-white font-light">
+                    Hosted by @{{ listing.owner.username if listing.owner and listing.owner.username else "Dwellio Concierge" }}
+                  </h2>
+                  <p class="zodiac-font text-xs text-zinc-400 mt-0.5 font-light">
+                    {{ listing.owner.email if listing.owner and listing.owner.email else "Superhost · Verified Host" }} · Response rate: 100%
+                  </p>
+                </div>
+              </div>
+              <span class="hidden sm:inline-flex px-3 py-1 rounded-full text-[11px] font-medium bg-pink-500/10 border border-pink-500/30 text-pink-300">
+                Verified Host
+              </span>
+            </div>
+
+            <!-- Key Stay Highlights -->
+            <div class="p-5 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl space-y-3.5">
+              <div class="flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 flex-shrink-0 mt-0.5 text-xs">
+                  <i class="fa-solid fa-door-open"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-xs text-white">Self Check-in</h3>
+                  <p class="zodiac-font text-xs text-zinc-400 mt-0.5 font-light">Check yourself in easily with the smart keypad on arrival.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 flex-shrink-0 mt-0.5 text-xs">
+                  <i class="fa-solid fa-wifi"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-xs text-white">High-Speed Wi-Fi & Dedicated Workspace</h3>
+                  <p class="zodiac-font text-xs text-zinc-400 mt-0.5 font-light">Fast 250 Mbps connection ideal for remote work and streaming.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 flex-shrink-0 mt-0.5 text-xs">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-xs text-white">Free Cancellation</h3>
+                  <p class="zodiac-font text-xs text-zinc-400 mt-0.5 font-light">Cancel up to 48 hours before check-in for a full refund.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full Description -->
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl">
+              <h2 class="stardom-font text-xl text-gradient-pink font-light tracking-wide mb-3">
+                About this space
+              </h2>
+              <p class="zodiac-font text-sm text-zinc-300 font-light leading-relaxed whitespace-pre-line">
+                {{ listing.description }}
+              </p>
+            </div>
+
+            <!-- Amenities Grid -->
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl">
+              <h2 class="stardom-font text-xl text-gradient-pink font-light tracking-wide mb-4">
+                What this place offers
+              </h2>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs zodiac-font font-light text-zinc-300">
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-water-ladder text-pink-400 text-xs"></i>
+                  <span>Private Pool</span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-mountain-sun text-pink-400 text-xs"></i>
+                  <span>Scenic Views</span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-snowflake text-pink-400 text-xs"></i>
+                  <span>Air Conditioning</span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-utensils text-pink-400 text-xs"></i>
+                  <span>Chef's Kitchen</span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-square-parking text-pink-400 text-xs"></i>
+                  <span>Free Valet Parking</span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <i class="fa-solid fa-tv text-pink-400 text-xs"></i>
+                  <span>65" 4K Smart TV</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl">
+              <h2 class="stardom-font text-xl text-gradient-pink font-light tracking-wide mb-2">
+                Where you'll be
+              </h2>
+              <p class="zodiac-font text-xs text-zinc-400 font-light mb-3">
+                <i class="fa-solid fa-map-pin text-pink-400 mr-1 text-[10px]"></i>
+                {{ listing.location }}, {{ listing.country }}
+              </p>
+              <div class="rounded-2xl overflow-hidden border border-white/[0.06] bg-white/[0.01] p-6 text-center">
+                <i class="fa-solid fa-earth-asia text-2xl text-pink-400/80 mb-2 block"></i>
+                <span class="zodiac-font text-xs text-zinc-300 font-light">Scenic locale in {{ listing.location }}</span>
+                <p class="text-[11px] text-zinc-500 mt-1">Exact location provided after confirmed booking</p>
+              </div>
+            </div>
+            <!-- Review Section -->
+             <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl">
+              <h2 class="stardom-font text-xl text-gradient-pink font-light tracking-wide mb-2">
+                Reviews 
+              </h2>
+              <form action="/listings/{{ listing._id }}/reviews" method="POST">
+                  <p class="zodiac-font text-xs text-zinc-400 font-light mb-3">
+                <div>
+                  <label for="title" class="block text-[11px] font-bold uppercase tracking-wider text-pink-400 mb-1.5">
+                    Name <span class="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="review[name]"
+                    id="name"
+                    required
+                    placeholder="e.g. Alex Morgan"
+                    class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500/60 focus:bg-zinc-950/70 transition"
+                  />
+                </div>
+              </p>
+              <!-- Desc -->
+              <p class="zodiac-font text-xs text-zinc-400 font-light mb-3">
+                <div>
+                  <label for="title" class="block text-[11px] font-bold uppercase tracking-wider text-pink-400 mb-1.5">
+                    Description <span class="text-red-400">*</span>
+                  </label>
+                  <textarea
+                    type="text"
+                    name="review[description]"
+                    rows="5"
+                    id="description"
+                    required
+                    placeholder="e.g. A cozy and modern stay surrounded by peaceful views, perfect for a relaxing getaway. Enjoy comfortable rooms, a welcoming atmosphere, and easy access to nearby attractions restaurants, and local experiences."
+                    class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500/60 focus:bg-zinc-950/70 transition"
+                  ></textarea>
+                </div>
+              </p>
+              <!-- Rating No. -->
+              <p>
+              <div>
+                  <label for="price" class="block text-[11px] font-bold uppercase tracking-wider text-pink-400 mt-1">
+                    Rating <span class="text-red-400">*</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="absolute left-3.5 text-pink-400 font-bold text-xs">*</span>
+                    <input
+                      type="number"
+                      name="review[rating]"
+                      id="rating"
+                      min="1"
+                      max="5"
+                      required
+                      placeholder="[1-5]"
+                      class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-8 pr-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500/60 focus:bg-zinc-950/70 transition"
+                    />
+                  </div>
+                </div>
+                </p>
+                <!-- button -->
+                 <button
+                type="submit"
+                class="w-full mx-auto mt-5 px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 text-white font-bold text-xs tracking-wide shadow-[0_0_20px_rgba(255,42,133,0.45)] hover:shadow-[0_0_30px_rgba(255,42,133,0.7)] hover:scale-102 active:scale-98 transition cursor-pointer flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-cloud-arrow-up text-[11px]"></i>
+                <span>Add Review!</span>
+              </button>
+              </form>
+              <!-- See Reviews -->
+               
+              <div class="mt-8 pt-6 border-t border-white/[0.08]">
+                <div class="mb-4 flex items-center justify-between">
+                  <h3 class="stardom-font text-lg text-gradient-pink font-light tracking-wide">Guest Highlights</h3>
+                  <span class="text-[10px] uppercase tracking-[0.18em] text-zinc-500 font-semibold">Verified stay</span>
+                </div>
+                <!-- box start -->
+                 {% for review in listing.reviews %}
+                 <div class="box flex justify-between  border border-white/[0.08] bg-white/[0.02] p-4 shadow-[0_0_20px_rgba(255,42,133,0.08) ] rounded-2xl mt-4">
+                   
+                  <div class="box-left flex flex-col">
+                    
+                <div class="">
+                  <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500/30 to-rose-500/10 border border-pink-500/30 flex items-center justify-center text-pink-300 flex-shrink-0">
+                      <i class="fa-solid fa-user text-sm"></i>
+                    </div>
+
+                    <div class="">
+                      <div class="flex items-center justify-between gap-3 flex-wrap">
+                        <div>
+                          <p class="font-semibold text-sm text-white">{{ review.name }}</p>
+                          <p class="text-[10px] uppercase tracking-[0.18em] text-zinc-500 mt-0.5">{{ review.createdAt if review.createdAt else "Recent stay" }}</p>
+                        </div>
+                        <!-- Rating Stars -->
+                        
+                      </div>
+
+                      <p class="zodiac-font text-xs text-zinc-300 mt-3 leading-relaxed font-light">
+                        “{{ review.description }}"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                  </div>
+                  <div class="box-right flex flex-col justify-between">
+                    <div class="flex items-center gap-1 text-pink-400 text-[12px] justify-end">
+                           {% for i in range(review.rating|int) %}
+                             <i class="fa-solid fa-star"></i>
+                           {% endfor %}
+                     </div>
+                     <div class="button">
+                    <form action="/listings/{{ listing._id }}/reviews/{{ review._id }}?_method=DELETE" method="POST"><button
+                      type="submit"
+                      class="px-4 py-2 rounded-full bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-900/40 hover:text-red-200 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+                    >
+                      <i class="fa-regular fa-trash-can text-[10px]"></i>
+                      <span>Delete</span>
+                    </button></form>
+                     </div>
+                  </div>
+                   
+                 </div>
+               {% endfor %}
+              </div>
+               
+              <!--  -->
+              
+            </div>
+
+            <!-- HOST ACTIONS: EDIT & DELETE CONTROLS (Only visible to listing owner) -->
+            {% if currUser and listing.owner and (listing.owner._id == currUser._id or listing.owner.username == currUser.username) %}
+            <div class="p-5 rounded-3xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-xl">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <span class="text-[11px] uppercase font-bold text-pink-400 tracking-wider">Host Controls</span>
+                  <p class="zodiac-font text-xs text-zinc-400 mt-0.5 font-light">Manage your property listing and availability details.</p>
+                </div>
+
+                <div class="flex items-center gap-2.5">
+                  <!-- Edit Button -->
+                  <a
+                    href="/listings/{{ listing._id }}/edit"
+                    class="px-4 py-2 rounded-full bg-white/[0.04] border border-pink-500/35 text-pink-300 hover:text-white hover:border-pink-500 text-xs font-semibold flex items-center gap-1.5 hover:shadow-[0_0_15px_rgba(255,42,133,0.3)] transition"
+                  >
+                    <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                    <span>Edit Listing</span>
+                  </a>
+
+                  <!-- Delete Button -->
+                  <form
+                    action="/listings/{{ listing._id }}?_method=DELETE"
+                    method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');"
+                  >
+                    <button
+                      type="submit"
+                      class="px-4 py-2 rounded-full bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-900/40 hover:text-red-200 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+                    >
+                      <i class="fa-regular fa-trash-can text-[10px]"></i>
+                      <span>Delete</span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- RIGHT COLUMN: STICKY BOOKING CARD -->
+          <div class="lg:sticky lg:top-24">
+            <div
+              class="rounded-3xl p-6 bg-zinc-950/60 border border-pink-500/25 backdrop-blur-2xl shadow-[0_15px_45px_rgba(255,42,133,0.14)]"
+            >
+              <!-- Price per night -->
+              <div class="flex items-baseline justify-between pb-4 border-b border-white/[0.06]">
+                <div class="flex items-baseline gap-1">
+                  <span class="px-3.5 py-1 rounded-xl bg-black/60 border border-pink-500/30 text-white font-bold text-xl shadow-[0_0_12px_rgba(255,42,133,0.2)]">
+                    <span class="text-gradient-pink">₹{{ listing.price|inr }}</span>
+                  </span>
+                  <span class="text-[11px] text-zinc-500 font-light zodiac-font">/ night</span>
+                </div>
+                <div class="text-xs text-zinc-400 zodiac-font">
+                  <span class="text-pink-400 font-semibold"><i class="fa-solid fa-star text-[9px]"></i> 4.95</span>
+                  <span>(84)</span>
+                </div>
+              </div>
+
+              <!-- Reservation Details Pickers -->
+              <div class="mt-5 border border-white/[0.07] rounded-2xl overflow-hidden divide-y divide-white/[0.07] text-xs">
+                <div class="grid grid-cols-2 divide-x divide-white/[0.07]">
+                  <div class="p-2.5 bg-white/[0.02] hover:bg-white/[0.04] transition cursor-pointer">
+                    <span class="block text-[9px] font-bold text-pink-400 uppercase tracking-wider">CHECK-IN</span>
+                    <span class="text-zinc-200 font-medium text-xs">Oct 24, 2026</span>
+                  </div>
+                  <div class="p-2.5 bg-white/[0.02] hover:bg-white/[0.04] transition cursor-pointer">
+                    <span class="block text-[9px] font-bold text-pink-400 uppercase tracking-wider">CHECKOUT</span>
+                    <span class="text-zinc-200 font-medium text-xs">Oct 27, 2026</span>
+                  </div>
+                </div>
+                <div class="p-2.5 bg-white/[0.02] hover:bg-white/[0.04] transition cursor-pointer">
+                  <span class="block text-[9px] font-bold text-pink-400 uppercase tracking-wider">GUESTS</span>
+                  <span class="text-zinc-200 font-medium text-xs">2 guests, 1 room</span>
+                </div>
+              </div>
+
+              <!-- Reserve Action Button -->
+              <button
+                type="button"
+                onclick="alert('Reservation request initiated for {{ listing.title }}! Host will confirm shortly.');"
+                class="w-full mt-5 py-3.5 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 text-white font-bold text-xs tracking-wide shadow-[0_0_20px_rgba(255,42,133,0.45)] hover:shadow-[0_0_30px_rgba(255,42,133,0.7)] hover:scale-102 active:scale-98 transition cursor-pointer flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-bolt text-[10px]"></i>
+                <span>Reserve This Stay</span>
+              </button>
+
+              <p class="text-center text-[10px] text-zinc-500 mt-2.5 font-light zodiac-font">
+                You won't be charged until booking is confirmed
+              </p>
+
+              <!-- Transparent Price Calculation Breakdown -->
+              <div class="mt-5 pt-5 border-t border-white/[0.06] space-y-2.5 text-xs zodiac-font font-light text-zinc-300">
+                <div class="flex justify-between">
+                  <span>₹{{ listing.price|inr }} × 3 nights</span>
+                  <span>₹{{ (listing.price * 3)|inr }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Cleaning & sanitization fee</span>
+                  <span>₹1,200</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Dwellio concierge service fee</span>
+                  <span>₹1,850</span>
+                </div>
+                <div class="pt-2.5 border-t border-white/[0.06] flex justify-between text-xs font-bold text-white">
+                  <span>Total before taxes</span>
+                  <span class="text-gradient-pink">₹{{ (listing.price * 3 + 3050)|inr }}</span>
+                </div>
+              </div>
+
+              <!-- Guarantee strip -->
+              <div class="mt-5 pt-3.5 border-t border-white/[0.06] flex items-center gap-2.5 text-[11px] text-zinc-400">
+                <i class="fa-solid fa-shield-check text-pink-400 text-base flex-shrink-0"></i>
+                <p class="leading-tight font-light zodiac-font">
+                  <strong class="text-white font-medium">Dwellio Guarantee:</strong> Every booking is backed by guest refund & 24/7 host support.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    {% include "includes/footer.html" %}
+  </body>
+</html>
